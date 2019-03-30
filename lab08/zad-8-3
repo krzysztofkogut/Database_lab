@@ -1,0 +1,50 @@
+-----------------------------------------------------------------------------------------------------------------------------
+Wyznacz minimalny zbiór zależności funkcyjnych dla poniższych zbiorów.
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+--------- 8.3.1. -----------
+F = { C → {A,B}, E → {A,D}, C → D, E → B }.
+
+ODP:
+C->A
+C->B
+C->D
+E->A
+E->D
+E->B
+
+
+--------- 8.3.2. -----------
+F = { A → B, A → C, {A,B} → D, {A,C} → {B,D} }.
+
+ODP:
+(1) Rozbijamy AC->BD i otrzymujemy:
+A->B
+A->C
+AB->D
+AC->B
+AC->D.
+
+(2) Teraz szukamy, czy po lewej nie ma za dużo atrybutów:
+A+ = {A,B,C,D}. Zatem z A można wywnioskować B i C więc odrzucamy B i C z lewych stron trzech ostatnich zależności. Zostaje: 
+A->B
+A->C
+A->D
+
+(3) Żadna z pozostałych zależności funkcyjnych nie jest skrótem pozostałych, zatem poowyższy zbiór jest już minialny.
+
+
+--------- 8.3.3. -----------
+F = { A → B, B → C, A → C, C → A, C → B, B → A }.
+
+(1) i (2) warunki są spełnione.
+
+(3) wykreślamy A->B, bo można to zamienić na A->C,C->B
+    wykreślamy B->C, bo można to zamienić na B->A,A->C
+    wykreślamy C->A, bo można to zamienić na C->B,B->A
+
+Zostaje:
+A->C
+C->B
+B->A

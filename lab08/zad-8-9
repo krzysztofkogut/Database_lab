@@ -1,0 +1,37 @@
+-----------------------------------------------------------------------------------------------------------------------------
+Sprowadź relację z zadania 8.6 do BCNF. Czy istnieje dekompozycja, która zachowuje zależności funkcyjne?
+-----------------------------------------------------------------------------------------------------------------------------
+
+H = {M,P,S,T}
+F = { {S,T} → M, M → P, P → S}
+
+klucze: TS, TM, TP
+
+
+A) Rozkład według M->P:
+
+X = M
+A = P
+H1 = {M,P}   => F1 = {M->P}     => klucz: M, zatem relacja jest w BCNF
+H2 = {S,T,M} => F2 = {ST->M}    => klucz: ST, zatem relacja jest w BCNF
+
+Powyższy rozkład nie zachował zależności funkcyjnych.
+
+B) Rozkład według P->S:
+
+X = P
+A = S
+H1 = {P,S}    => F1 = {P->S}    => klucz: P, zatem relacja jest w BCNF
+H2 = {M,P,T}  => F2 = {M->P}    => nie ma tutaj BCNF (M nie jest nadkluczem) więc rozkłdamy dalej
+                    Rozkład według M->P:
+                    X = M
+                    A = P
+                    H21 = {M,P}
+                    H22 = {M,T}
+
+Powyższy rozkład również nie zachował zależności funkcyjnych.
+
+Zatem nie istnieje taki rozkład zadanej relacji na BCNF, który zachowuje zależności funkcyjne.
+
+
+// TODO: sprawdź czy to na pewno ma sens

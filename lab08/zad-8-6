@@ -1,0 +1,56 @@
+-----------------------------------------------------------------------------------------------------------------------------
+Dana jest relacja R o schemacie H = {M,P,S,T} (patrz zadanie 8.5) oraz zbiór zależności funkcyjnych
+F = {{S,T} → M, M → P, P → S}. Zakładając, że R jest w 1NF, wyznacz w jakiej maksymalnej postaci normalnej jest relacja R.
+-----------------------------------------------------------------------------------------------------------------------------
+
+TEORIA:
+
+Pierwsza postać normalna (1NF):
+    - każdy atrybut w relacji przyjmuje tylko wartości niepodzielne (daty również uznaje się za atomiczne).
+
+Druga postać normalna (2NF):
+    - być w 1NF
+    - zbiór F+ nie zawiera zależności częściowych - każdy niekluczowy atrybut zależy funkcyjnie od całego klucza (kluczy może
+      być kilka).
+
+Trzecia postać normalna (3NF):
+    - być w 2NF
+    - zbiór F+ nie zawiera zależności przechodnich - każdy atrybut niekluczowy zależy funkcyjnie wyłącznie
+      od klucza i niczego więcej.
+
+Postać normalna Boyce-Codda (BCNF):
+    - być w 1NF
+    - lewa strona każdej nietrywialnej zależności funkcyjnej jest nadkluczem LUB prawa zawiera tylko atr. kluczowe.
+
+NADKLUCZ - klucz + [inny_atrybut_kluczowy|atrybut_niekluczowy]
+KLUCZ    - minimalny nadklucz
+
+Rozw:
+
+F = {{S,T} → M, M → P, P → S}
+
+1. Czy jest w 2NF?
+
+Najpierw szukamy klucza: 
+______________________
+Left | Middle | Right
+_____|________|_______
+  T  |  SMP   | pusty 
+_____|________|_______
+
+TS+ = {T,S,M,P} => TS jest kluczem
+TM+ = {T,M,P,S} => TM jest kluczem
+TP+ = {T,P,S,M} => TP jest kluczem
+
+Zatem wszystkie atrybuty są kluczowe, w efekcie czego nie mogą występować zależności częściowe.
+
+Zatem relacja jest w 2NF.
+
+2. Czy jest w 3NF?
+
+W relacji nie występują atrybuty niekuczowe, więc nie mogą występować zależności przechodnie.
+Zatem relacja jest w 3NF.
+
+3. Czy jest w BCNF?
+
+Relacja nie jest w BCNF, bo zależności M → P, P → S nie mają po lewej stronie kluczy.

@@ -1,0 +1,28 @@
+/* baza danych: cukiernia
+
+Napisz zapytanie wyświetlające informacje na temat klientów (nazwa, ulica, miejscowość), używając
+odpowiedniego operatora in/not in/exists/any/all, którzy: */
+
+/* 3. zamówili pudełko Kremowa fantazja lub Kolekcja jesienna, */
+select nazwa, ulica, miejscowosc from cukiernia.klienci
+where idklienta in (
+	select distinct idklienta from cukiernia.klienci k natural join cukiernia.zamowienia natural join cukiernia.artykuly a join cukiernia.pudelka p using(idpudelka)
+	where p.nazwa in ('Kremowa fantazja','Kolekcja jesienna')
+);
+
+/* 4. zamówili co najmniej 2 sztuki pudełek Kremowa fantazja lub Kolekcja jesienna w ramach jednego zamówienia, */
+select nazwa, ulica, miejscowosc from cukiernia.klienci
+where idklienta in (
+	select distinct idklienta from cukiernia.klienci k natural join cukiernia.zamowienia natural join cukiernia.artykuly a join cukiernia.pudelka p using(idpudelka)
+	where p.nazwa in ('Kremowa fantazja','Kolekcja jesienna') and sztuk>=2
+);
+
+/* 6. złożyli przynajmniej jedno zamówienie, */
+select nazwa, ulica, miejscowosc from cukiernia.klienci where idklienta in (
+	select distinct idklienta from cukiernia.zamowienia
+);
+
+/* 7. nie złożyli żadnych zamówień.*/
+select nazwa, ulica, miejscowosc from cukiernia.klienci where idklienta  not in (
+	select distinct idklienta from cukiernia.zamowienia
+);

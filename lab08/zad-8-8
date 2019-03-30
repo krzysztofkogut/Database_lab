@@ -1,0 +1,50 @@
+-----------------------------------------------------------------------------------------------------------------------------
+Dana jest relacja R o schemacie H = {C,N,O,P}
+oraz zbiór zależności funkcyjnych F = {N → P, {N,O} → C }.
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+-------- 1. Zakładając, że R jest w 1NF, wyznacz w jakiej maksymalnej postaci normalnej jest relacja R. ---------------------
+
+Co jest kluczem?
+______________________
+Left | Middle | Right
+_____|________|_______
+  NO |  pusty |  PC 
+_____|________|_______
+NO+ = {N,O,P,C} => NO jest jedynym kluczem
+______________
+Key  | Non-Key
+_____|________
+NO   | PC   
+_____|________
+
+1. BCNF? Nie, bo N → P, a N nie jest nadkluczem.
+2. 3NF? Nie, bo N → P, a P nie jest atrybutem kluczowym.
+3. 2NF? Nie, bo N → P, a N nie jest pełnym kluczem.
+
+Zatem relacja jest jedynie w 1NF.
+
+
+-------- 2. Sprowadź relację do 3NF. ----------------------------------------------------------------------------------------
+
+Nasz cel to:
+H1 = X U {A} 
+H2 = H - {A}, gdzie X nie jest nadkluczem. UWAGA: przekształcenie do 3NF nie gwarantuje zachowania zależności funkcyjnych!
+
+Rozkładamy według zależności N->P.
+Zatem X = N
+      A = {P}.
+      H1 = {N,P}                        => F1 = {N -> P}
+      H2 = {C,N,O,P} - {P} = {C,N,O}    => F2 = {NO -> C}
+
+Udało się zachować zależności funkcyjne.
+      
+
+-------- 3. Czy wszystkie relacje w wyniku dekompozycji są w BCNF? ----------------------------------------------------------
+
+1. Relacja H1 = {N,P}, F1 = {N -> P} jest w BCNF, ponieważ lewa strona jedynej zależności funkcyjnej jest nadkluczem (a nawet
+   kluczem).
+
+2. Relacja H2 = {C,N,O}, F2 = {NO -> C} również jest w BCNF, ponieważ lewa strona jedynej zależności funkcyjnej jest
+   nadkluczem (a nawet kluczem).

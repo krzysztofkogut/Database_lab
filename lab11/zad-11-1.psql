@@ -1,0 +1,38 @@
+/* 1. Napisz funkcję masaPudelka wyznaczającą masę pudełka jako sumę masy czekoladek w nim zawartych. Funkcja jako argument
+      przyjmuje identyfikator pudełka. Przetestuj działanie funkcji na podstawie prostej instrukcji select. */
+
+create function cukiernia.masaPudelka(pudelko char(4))
+returns numeric(7,2) as
+$$
+declare 
+    suma numeric(7,2);
+
+begin
+    select sum(sztuk*masa) into suma
+    from cukiernia.zawartosc natural join cukiernia.czekoladki
+    where idpudelka=pudelko;
+
+    return suma;
+end;
+$$
+language plpgsql;
+
+
+/* 2. Napisz funkcję liczbaCzekoladek wyznaczającą liczbę czekoladek znajdujących się w pudełku. Funkcja jako argument
+      przyjmuje identyfikator pudełka. Przetestuj działanie funkcji na podstawie prostej instrukcji select. */
+
+create function cukiernia.liczbaCzekoladek(pudelko char(4))
+returns integer as
+$$
+declare 
+    liczba integer;
+
+begin
+    select sum(sztuk) into liczba
+    from cukiernia.zawartosc
+    where idpudelka=pudelko;
+
+    return liczba;
+end;
+$$
+language plpgsql;

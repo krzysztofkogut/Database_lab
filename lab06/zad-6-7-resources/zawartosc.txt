@@ -1,0 +1,11 @@
+zztc|b01|1
+zztc|b03|1
+zztc|d11|1
+zztc|f01|1
+zztc|f02|1
+zztc|m05|1
+zjnb|b05|3
+zjnb|m01|2
+zjnb|m13|2
+zjnb|m12|2
+zjnb|m11|2

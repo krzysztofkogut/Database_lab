@@ -1,0 +1,21 @@
+/* 1. Napisz funkcję zwracającą informacje o zamówieniach złożonych przez klienta, którego identyfikator podawany
+      jest jako argument wywołania funkcji. W/w informacje muszą zawierać: idzamowienia, idpudelka, datarealizacji.
+      Przetestuj działanie funkcji. Uwaga: Funkcja zwraca więcej niż 1 wiersz! */
+
+create temporary table zamowieniaKlientaType(
+    zamowienia int,
+    pudelka char(4),
+    data_realizacji date
+);
+
+create or replace function cukiernia.zamowieniaKlienta(klient integer)
+returns setof zamowieniaKlientaType as
+$$
+begin
+    return query
+    select idzamowienia, idpudelka, datarealizacji
+    from cukiernia.zamowienia natural join cukiernia.artykuly
+    where idklienta=klient;
+end;
+$$
+language plpgsql;

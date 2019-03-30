@@ -1,0 +1,41 @@
+-----------------------------------------------------------------------------------------------------------------------------
+Dana jest relacja R o schemacie H = {P,E,O,B,K} (patrz zadanie 8.1) oraz zbiór zależności funkcyjnych
+F = {{P,O} → E, {P,E} → O, {P,O} → B, B → K}
+Które z poniższych zależności należą do zbioru F+?
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+--------- 8.2.1. -----------
+P → E chyba nie można
+
+--------- 8.2.2. -----------
+{P,K} → B chyba nie można no bo skąd K po lewej by się miało wziąć
+
+
+--------- 8.2.3. -----------
+{P,E} → B
+można bo z reguły pseudoprzechodności:
+PE->O
+PO->B => PPE->B => PE->B
+
+--------- 8.2.4. -----------
+{P,E,O} → K można bo:
+1. z reguły przechodności łączymy PE->B z B->K => dostajemy PE->K
+2. z reguły sumowania łączymy dokładamy: PEO->KO
+3. rozbijamy PEO->KO na PEO->K oraz PEO->O
+
+--------- 8.2.5. -----------
+B → O chyba nie można 
+
+--------- 8.2.6. -----------
+{P,E} → {K,B} można bo:
+
+PE->O
+PO->B ===z regułypseudoprzechodnosci===>PEP->B => PE->B
+                                                   B->K ===(nie wiem czy tak można)===> PE->BK
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+zasady sa na stronie 40/99 wykładu:
+http://home.agh.edu.pl/~mszpyrka/lib/exe/fetch.php?media=lectures:bd:bd2-projektowanie-a4.pdf

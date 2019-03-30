@@ -1,0 +1,25 @@
+/* baza danych: cukiernia
+
+Napisz zapytanie wyświetlające informacje na temat zamówień (dataRealizacji, idzamowienia)
+używając odpowiedniego operatora in/not in/exists/any/all, które: */
+
+/* 1. zostały złożone przez klienta, który ma na imię Antoni, */
+select idzamowienia, datarealizacji from cukiernia.zamowienia
+where (idzamowienia,datarealizacji) in (
+    select z.idzamowienia, z.datarealizacji  from cukiernia.zamowienia z natural join cukiernia.klienci k
+    where k.nazwa like '%Antoni%'
+);
+
+/* 2. zostały złożone przez klientów z mieszkań (zwróć uwagę na pole ulica), */
+select idzamowienia, datarealizacji from cukiernia.zamowienia
+where (idzamowienia,datarealizacji) in (
+    select z.idzamowienia, z.datarealizacji  from cukiernia.zamowienia z natural join cukiernia.klienci k
+    where k.ulica like '%/%'
+);
+
+/* 3. zostały złożone przez klienta z Krakowa do realizacji w listopadzie 2013 roku. */
+select idzamowienia, datarealizacji from cukiernia.zamowienia
+where (idzamowienia,datarealizacji) in (
+    select z.idzamowienia,z.datarealizacji from cukiernia.zamowienia z natural join cukiernia.klienci k
+    where k.miejscowosc='Kraków' and extract(year from z.datarealizacji)=2013 and extract(month from z.datarealizacji)=11
+);

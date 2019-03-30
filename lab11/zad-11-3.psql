@@ -1,0 +1,44 @@
+/* 1. Napisz funkcję sumaZamowien obliczającą łączną wartość zamówień złożonych przez klienta, które czekają
+      na realizację (są w tabeli Zamowienia). Funkcja jako argument przyjmuje identyfikator klienta. Przetestuj działanie funkcji. */
+
+create or replace function cukiernia.sumaZamowien(klient integer)
+returns numeric(7,2) as
+$$
+declare
+    suma numeric(7,2);
+
+begin
+    select sum(cena) into suma
+    from cukiernia.zamowienia natural join cukiernia.artykuly natural join cukiernia.pudelka
+    where idklienta=klient;
+
+    return suma;
+end;
+$$
+language plpgsql;
+
+/* 2. Napisz funkcję rabat obliczającą rabat jaki otrzymuje klient składający zamówienie. Funkcja jako argument przyjmuje identyfikator klienta.
+      Rabat wyliczany jest na podstawie wcześniej złożonych zamówień w sposób następujący:
+        4 % jeśli wartość zamówień jest z przedziału 101-200 zł;
+        7 % jeśli wartość zamówień jest z przedziału 201-400 zł;
+        8 % jeśli wartość zamówień jest większa od 400 zł. */
+
+create or replace function cukiernia.rabat(klient integer)
+returns numeric(7,2) as
+$$
+declare
+    rabat integer;
+    zamowienie numeric(7,2);
+begin
+    select cukiernia.sumaZamowien(klient) into zamowienie;
+
+    if zamowienie >= 101 and zamowienie <= 200 then rabat := 4;
+    elseif zamowienie >= 201 and zamowienie <= 400 then rabat := 7;
+    elseif zamowienie > 400 then rabat := 8;
+    end if;
+
+    return rabat;
+
+end;
+$$
+language plpgsql;

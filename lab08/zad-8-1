@@ -1,0 +1,197 @@
+-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------- 1. Wyznacz wszystkie klucze relacji R. ----------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+H = {P,O,E,B,K}                                -> schemat relacji
+F = {{P,O} → E, {P,E} → O, {P,O} → B, B → K}   -> zbiót zależnosci funkcyjnych
+
+
+TEORIA:
+Co to jest klucz?
+
+To taki atrybut (lub kilka atrybutów), dla którego domkniecie tranzytywne prowadzi do H (czyli wszystkich atrybutów w relacji).
+
+Jak wyznaczyć klucze?
+
+Metoda Wojnickiego:
+Jeśli atrybut jest tylko w Left, to MUSI być częścią każdego klucza. Należy sprawdzić, czy atrybut stanowi klucz sam w sobie,
+a jeżeli nie stanowi to wyznaczyć ewentualne atrybuty, które razem z nim stanowią klucze. 
+Jeśli atrybut jest w Middle, to istnieje podejrzenie, że MOŻE, ALE NIE MUSI być CZĘŚCIĄ klucza.
+Jeśli atrybut jest tylko w Right, to NIE MOŻE być częścią żadnego klucza.
+______________________
+Left | Middle | Right
+_____|________|_______
+P    |   OEB  |   K
+_____|________|_______
+
+
+Wypisujemy domknięcia tranzytywne:
+P+ = {P}
+PO+ = {P,O,E,B,K} = H
+PE+ = {P,E,O,B,K} = H
+PB+ = {P,B,K}
+
+Tylko PO+, PE+ prowadzą do wszystkich atrybutów w relacji, zatem PO i PE są kluczami. Można też zapisać bardziej ogólnie:
+___________________________
+ATRUBUTY  |  ATRYBUTY
+KLUCZOWE  |  NIEKLUCZOWE
+__________|________________
+P,O,E     |  B,K
+__________|________________
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+--- 2. Wyznacz co najmniej 5 nietrywialnych i prostych zależności funkcyjnych należących do F+, ale nie należących do F. ---- 
+-----------------------------------------------------------------------------------------------------------------------------
+
+TEORIA:
+Zależność funkcyjna X->Y jest trywialna             ->  Y zawiera się w X. (Np. zależność: AB -> A, AB -> B)
+Zależność funkcyjna jest prosta                     ->  po prawej stronie ma jeden atrybut.
+Domknięcie zbioru zalezności funkcyjnych F (ozn.F+) ->  zbiór wszystkich zal.funkc. wynikających logicznie z F.  
+
+
+Zatem w relacji H = {P,O,E,B,K}, F = {{P,O} → E, {P,E} → O, {P,O} → B, B → K} nowymi (czyli nienależącymi do F) zależnościami
+nietrywialnymi i prostymi są:
+PO -> K
+PO -> K
+PE -> K
+PE -> B
+PB -> O
+PB -> B
+PB -> K
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------- 3. Sprawdź czy F jest minimalny. ----------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+TEORIA:
+Zbiór zaleznośsci funkcyjnych F jest minimalny, jeśli: 
+(1) Dla każdej zal. z F po prawej stronie jest dokładnie jeden atrybut (czyli wszystkie zależności są proste)
+(2) Po lewej stronie jest minimalna ilość atrybutów (nie ma zal. typu: F={A->B, AB->C})
+(3) Każda zal. w F jest konieczna, więć jej usunięcie spowodowałoby utratę danych.
+
+Czyli w skrócie:
+(1) Singleton RHS (right-hand side)
+(2) No redundant FDs (functionals dependencies)
+(3) No extraneous LHS attributes 
+
+
+F = {{P,O} → E, {P,E} → O, {P,O} → B, B → K}
+Algorytm:
+1. Jak są jakieś zależności, które mają po prawej stronie kilka atrybutów to je rozbijamy (Np. AB->CD => AB->C, AB->D).
+tutaj nie ma takich więc dalej.
+
+2. Sprawdzamy, czy zalezności mające po lewej stronie kilka atrybutów nie mają ich tam za dużo.
+Obliczamy:  - P+ = {P}
+              O+ = {O}, więc ani P->O ani O->P (czyli z żadnego nie można wywnioskować tego drugiego), ani P->E ani O->E
+              (czyli żaden nie może powiedzieć, że da radę wywnioskować prawą stronę bez pomocy drugiego) więc PO->E jest OK.
+            - P+ = {P}
+              E+ = {E}, więc PE->O jest OK.
+            - P+ = {P}
+              O+ = {O}, więc PO->B jest OK.
+
+3. Sprawdzamy, czy któraś z zależności nie jest jedynie skróceniem kilku innych. Czyli dla każdej zależności udajemy że nie
+istnieje i sprawdzamy, czy da się wyjść z lewej strony i innymi zależnościami dojść do prawej. Jak się da, to można taką
+zależność wyrzucić.
+- PO->E --> PO+ = {P,O,B,K} <-- nie ma tutaj E, więc ta zależność nie jest skrótem => zostaje
+- PE->O --> PE+ = {P,E} <-- nie ma tutaj O => zostaje
+- PO->B --> PO+ = {P,O,E} <-- nie ma tutaj B => zostaje
+- B->K  --> B+ = pusty <-- nie ma tutaj K => zostaje
+
+Zatem F jest minimalny.
+
+
+
+// TODO======================================================================================================================
+
+zad:5
+
+sprawdzamy czy
+(pi_H1(F) U pi_H(F))+ == F+
+
+F' = (pi_H1(F) U pi_H(F))+
+
+
+wyliczamy wszystie domkniecia:
+M+ = {M,P,S}
+P+ = {P,S} 
+S+ = {S}
+T+ = {T}
+
+MS+ = {M,S,P}
+MP+ = {M,P,S}
+MT+ = {M,T,P,S} (O! wyszło że to jest klucz, wiec nie ma sensu liczyc domknieć dla M-T-coś-tam+)
+ST+ = {S,T,M,P}
+PT+ = {P,T,S,M}
+PS+ = {P,S}
+
+teraz liczymy rzut (czyli to wczesniejsze pi) (wszystkie ktore są w Hn i wynikają z wczesniejszego punktu oraz te które są w F dla atrybutow w H1):
+pi_H1(F) = {M->S, ----MT->S----}
+pi_H2(F) = {M->S, SM->P, -----MP->S----}    -> te które są oznaczone jako -----...---- powinny byc wykreslone ze wzgledu na minimalizacje
+
+teraz dodajemy te rzuty do siebie:
+F' = 
+
+
+
+zad:8.6
+H = {M,P,S,T} 
+F = {{S,T} → M, M → P, P → S}
+trzeba wyzanczyc klucz relacji
+
+wiec metoda na tabelke:
+______________________
+Left | Middle | Right
+_____|________|_______
+T    |   MPS  |   
+_____|________|_______
+
+
+T+ = {T}
+MT+ = MTPS = H
+PT+ = PTSM = H
+ST+ = STMP = H
+
+KLUCZOWE  |  NIEKLUCZOWE
+__________|________________
+MPST      |  pusty
+__________|________________
+
+
+
+3NF   wtw    pozdbior wl. klucza nie prowadzi do atrybutu niekluczowe
+
+3NF: po prawej jest atrybut kluczowy, po lewej nadklucz
+wiec jest w co najwyzej w 3NF
+
+
+
+nie jest w bcnf 
+
+
+
+
+zad:8.8
+
+coś łamie 2nf jeśli: podbior wlasciwy klucza prowadzi do atrybutu niekluczowego
+
+______________________
+Left | Middle | Right       <-- PODJERZENIA
+_____|________|_______
+NO   |        |  PC 
+_____|________|_______
+
+NO+ = {N,O,P,C} = H
+
+KLUCZOWE  |  NIEKLUCZOWE       <- 
+__________|________________
+NO        |  PC
+          |
+
+NO -> (jeden poziom niżej) N+ -> {NC}
+   -> O+ -> {O}
+
+wiec NO prowadzi do niekluczowego  P (lub C - nie pamietam bo zmazał) wiec nie ma 2NF
+
+YT, 2011: Garry Boetticher 
+

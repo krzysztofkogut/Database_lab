@@ -1,0 +1,33 @@
+/* baza danych: cukiernia
+
+Napisz zapytanie wyświetlające informacje na temat pudełek z czekoladkami (nazwa, opis, cena),
+używając odpowiedniego operatora, np. in/not in/exists/any/all, które: */
+
+
+/* 1. zawierają czekoladki o wartości klucza głównego D09 */
+select idpudelka, nazwa, opis, cena from cukiernia.pudelka p
+where exists (
+	select 1 from cukiernia.zawartosc z
+	where p.idpudelka = z.idpudelka and idczekoladki='d09'
+);
+
+/* 2. zawierają czekoladki Gorzka truskawkowa, */
+select idpudelka, nazwa, opis, cena from cukiernia.pudelka p
+where exists (
+	select 1 from cukiernia.zawartosc z natural join cukiernia.czekoladki c
+	where z.idpudelka = p.idpudelka and c.nazwa='Gorzka truskawkowa'
+);
+
+/* 3. zawierają przynajmniej jedną czekoladkę, której nazwa zaczyna się na S, */
+select idpudelka, nazwa, opis, cena from cukiernia.pudelka p
+where exists (
+	select 1 from cukiernia.zawartosc z natural join cukiernia.czekoladki c
+	where z.idpudelka = p.idpudelka and c.nazwa like 'S%'
+);
+
+/* 4. zawierają przynajmniej 4 sztuki czekoladek jednego gatunku (o takim samym kluczu głównym), */
+select idpudelka, nazwa, opis, cena from cukiernia.pudelka p
+where exists (
+	select 1 from cukiernia.zawartosc z
+	where z.idpudelka = p.idpudelka and z.sztuk >= 4
+);

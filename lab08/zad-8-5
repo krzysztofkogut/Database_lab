@@ -1,0 +1,35 @@
+-----------------------------------------------------------------------------------------------------------------------------
+Dana jest relacja R o schemacie H = {M,P,S,T} oraz zbiór zależności funkcyjnych F = {{S,T} → M, M → P, P → S}.
+Która z poniższych dekompozycji zachowuje wszystkie zależności funkcyjne?  
+-----------------------------------------------------------------------------------------------------------------------------
+
+--------- 8.5.1. -----------
+H1 = {M,S,T}, H2 = {M,P,S}
+
+pi_H1(F) = { ST->M } <------ po lewej i prawej zależności muszą być tylko atrybuty z H1
+pi_H2(F) = { M->P, P->S }
+
+widać że (pi_H1(F) U pi_H2(F))+ = F+, zatem dekompozycja zachowuje wszystkie zależności funkcyjne 
+
+
+--------- 8.5.2. -----------
+H1 = {M,S,T}, H2 = {P,S}
+
+pi_H1(F) = { ST -> M }
+pi_H2(F) = { P -> S }
+
+widać że (pi_H1(F) U pi_H2(F))+ =/= F+, zatem dekompozycja NIE zachowuje wszystkich zależności funkcyjnych 
+
+
+--------- 8.5.3. -----------
+H1 = {M,P,S}, H2 = {S,T}
+
+pi_H1(F) = {  M->P, P->S }
+pi_H2(F) = pusty
+
+widać że (pi_H1(F) U pi_H2(F))+ =/= F+, zatem dekompozycja NIE zachowuje wszystkich zależności funkcyjnych 
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+teoria: str. 52-54/99 http://home.agh.edu.pl/~mszpyrka/lib/exe/fetch.php?media=lectures:bd:bd2-projektowanie-a4.pdf

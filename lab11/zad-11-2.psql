@@ -1,0 +1,31 @@
+/* 1. Napisz funkcję zysk obliczającą zysk jaki cukiernia uzyskuje ze sprzedaży jednego pudełka czekoladek,
+      zakładając, że zysk ten jest różnicą między ceną pudełka, a kosztem wytworzenia zawartych w nim czekoladek
+      i kosztem opakowania (0,90 zł dla każdego pudełka). Funkcja jako argument przyjmuje identyfikator pudełka.
+      Przetestuj działanie funkcji na podstawie prostej instrukcji select. */
+
+create or replace function cukiernia.zysk(pudelko char(4))
+returns numeric(7,2) as
+$$
+declare
+    suma numeric(7,2);
+    cena numeric(7,2);
+
+begin
+    select sum(sztuk*koszt) into suma
+    from cukiernia.pudelka p natural join cukiernia.zawartosc z join cukiernia.czekoladki c on c.idczekoladki=z.idczekoladki
+    where idpudelka=pudelko;
+
+    select p.cena into cena
+    from cukiernia.pudelka p 
+    where idpudelka=pudelko;
+
+    return cena - suma - 0.9;
+end;
+$$
+language plpgsql;
+
+
+/* 2. Napisz instrukcję select obliczającą zysk jaki cukiernia uzyska ze sprzedaży pudełek zamówionych w wybranym dniu. */
+select sum(cukiernia.zysk(idpudelka))
+from cukiernia.zamowienia natural join cukiernia.artykuly
+where datarealizacji='2013-11-02';

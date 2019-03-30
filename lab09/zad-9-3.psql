@@ -1,0 +1,58 @@
+/* baza danych: firma
+Przygotuj skrypt implementujący bazę danych firma zgodnie z przedstawionym poniżej opisem.
+Uwaga: Baza danych ma zostać umieszczona w schemacie firma. */
+
+DROP SCHEMA IF EXISTS firma CASCADE;
+CREATE SCHEMA IF NOT EXISTS firma;
+
+/* Relacja dzialy zawiera atrybuty:
+
+iddzialu - typ znakowy, dokładnie 5 znaków, klucz główny,
+nazwa - typ znakowy, maksymalnie 32 znaki, wymagane,
+lokalizacja - typ znakowy, maksymalnie 24 znaki, wymagane,
+kierownik - liczba całkowita, klucz obcy odwołujący się do pola idpracownika w relacji pracownicy. */
+create table firma.dzialy (
+    iddzialu char(5) check(length(iddzialu)=5) primary key,
+    nazwa varchar(32) not null,
+    lokalizacja varchar(32) not null,
+    kierownik integer references firma.pracownicy(idpracownika)
+);
+
+/* Relacja pracownicy zawiera atrybuty:
+
+idpracownika - liczba całkowita, klucz główny,
+nazwisko - typ znakowy, maksymalnie 32 znaki, wymagane,
+imie - typ znakowy, maksymalnie 16 znaków, wymagane,
+dataUrodzenia - data, wymagane,
+dzial - typ znakowy, dokładnie 5 znaków, wymagane, klucz obcy odwołujący się do pola iddzialu w relacji dzialy,
+stanowisko - typ znakowy, maksymalnie 24 znaki,
+pobory - typ stałoprzecinkowy z dokładnością do 2 miejsc po przecinku.*/
+create table firma.pracownicy (
+    idpracownika integer primary key,
+    nazwiwsko varchar(32) not null,
+    imie varchar(16) not null,
+    dataUrodzenia date not null,
+    dzial char(5) references dzialy(iddzialu),
+    stanowisko varchar(24),
+    pobory numeric(5,2)
+);
+-- to ^ nie zadziała bo trzeba najpierw stworzyć te tabele żeby nadać ich kolumnom refencje do kolumn innej tabeli
+-- rozwiązanie tego problemu:
+
+create table firma.dzialy (
+    iddzialu char(5) check(length(iddzialu)=5) primary key,
+    nazwa varchar(32) not null,
+    lokalizacja varchar(32) not null
+);
+
+create table firma.pracownicy (
+    idpracownika integer primary key,
+    nazwiwsko varchar(32) not null,
+    imie varchar(16) not null,
+    dataUrodzenia date not null,
+    dzial char(5) references firma.dzialy(iddzialu),
+    stanowisko varchar(24),
+    pobory numeric(5,2)
+);
+
+alter table firma.dzialy add column kierownik integer references firma.pracownicy(idpracownika);

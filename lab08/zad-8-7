@@ -1,0 +1,28 @@
+-----------------------------------------------------------------------------------------------------------------------------
+Dana jest relacja R o schemacie H = {G,P,T,W}
+oraz zbiór zależności funkcyjnych F = {{P,T} → G, P → W, {G,T} → P }.
+Zakładając, że R jest w 1NF, wyznacz w jakiej maksymalnej postaci normalnej jest relacja R.
+-----------------------------------------------------------------------------------------------------------------------------
+
+Rozw:
+
+Co jest kluczem?
+______________________
+Left | Middle | Right
+_____|________|_______
+  T  |  PG    |   W 
+_____|________|_______
+TP+ = {T,P,G,W} => TP jest kluczem
+TG+ = {T,G,P,W} => TG jest kluczem
+______________
+Key  | Non-Key
+_____|________
+TPG  |  W    
+_____|________
+
+
+1. BCNF? Nie, bo wystęþuje P → W, a lewa strona nie jest nadkluczem.
+2. 3NF? Nie, bo występuje P → W, a prawa strona nie jest atr.kluczowym.
+3. 2NF? Nie, bo występuje P → W, a lewa strona nie jest pełnym kluczem.
+
+Zatem relacja jest jedynie w 1NF.
